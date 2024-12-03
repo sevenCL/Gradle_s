@@ -1,0 +1,8 @@
+[
+  {
+    "useLocal": false,
+    "moduleName": "module_user",
+    "modulePath": "../module_user",
+    "moduleGav": "com.xxx.xxx:1.0.0"
+  }
+]

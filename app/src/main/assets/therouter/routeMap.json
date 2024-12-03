@@ -1,0 +1,30 @@
+[
+  {
+    "path": "user/user",
+    "className": "com.seven.module_user.UserActivity",
+    "action": "",
+    "description": "",
+    "params": {}
+  },
+  {
+    "path": "review/review",
+    "className": "com.seven.module_reviews.ReviewActivity",
+    "action": "",
+    "description": "",
+    "params": {}
+  },
+  {
+    "path": "home/home",
+    "className": "com.seven.module_home.HomeActivity",
+    "action": "",
+    "description": "",
+    "params": {}
+  },
+  {
+    "path": "app/main",
+    "className": "com.seven.gradle.MainActivity",
+    "action": "",
+    "description": "",
+    "params": {}
+  }
+]

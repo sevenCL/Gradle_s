@@ -1,0 +1,47 @@
+[versions]
+agp = "8.2.2"
+kotlin = "1.9.25"
+coreKtx = "1.13.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.2"
+constraintlayout = "2.1.4"
+blankJUtil = "1.31.1"
+coroutinesCore = "1.8.1"
+coroutinesAndroid = "1.8.1"
+okhttp = "4.12.0"
+net = "3.6.4"
+glide = "4.16.0"
+ksp = "1.9.25-1.0.20"
+router = "1.2.2"
+seven_lib_ui = "1.0.0"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+blank-j-util = { group = "com.blankj", name = "utilcodex", version.ref = "blankJUtil" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesAndroid" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+net = { group = "com.github.liangjingkanji", name = "Net", version.ref = "net" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+the-router-apt = { group = "cn.therouter", name = "apt", version.ref = "router" }
+the-router = { group = "cn.therouter", name = "router", version.ref = "router" }
+seven_lib_ui = { group = "com.seven.android", name = "lib_ui", version.ref = "seven_lib_ui" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+the-router = { id = "cn.therouter.agp8", version.ref = "router" }
+

@@ -1,0 +1,15 @@
+[versions]
+androidGradlePlugin = "8.2.2"
+kotlin = "1.8.10"
+gson = "2.10.1"
+ddms = "30.0.2"
+gradle = "8.2.2"
+
+[libraries]
+android-gradlePlugin-api = { group = "com.android.tools.build", name = "gradle-api", version.ref = "androidGradlePlugin" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+android-ddms = { group = "com.android.tools.ddms", name = "ddmlib", version.ref = "ddms" }
+android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

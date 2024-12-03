@@ -1,0 +1,50 @@
+import groovy.json.JsonSlurper
+
+apply plugin: 'maven'
+
+def tag = "Nexus Publish-> "
+
+afterEvaluate { project ->
+    println(tag + "start ${project.name}")
+    def useLocalFile = new File(settings.getRootDir(), "aarConfig.json")
+    if (!useLocalFile.exists()) {
+        println(tag + "aarConfig.json文件不存在")
+        return
+    }
+    def useLocalText = useLocalFile.text
+
+    // 解析JSON文本
+    def json = new JsonSlurper()
+    def useLocalData = json.parseText(useLocalText)
+    def versionName = "1.0.0"
+    useLocalData.each { item ->
+        if (item.moduleName == project.name) {
+            println(tag + "item.moduleName: ${item.moduleName}")
+            println(tag + "item.versionName: ${item.versionName}")
+        }
+    }
+    uploadArchives {
+        configuration = configurations.archives
+        repositories {
+            mavenDeployer {
+                repository(url: MAVEN_FARM_MODULE_URL) {
+                    authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+                }
+                pom.project {
+                    groupId = GROUP_ID
+                    artifactId = project.name
+                    version = versionName
+                    packaging TYPE
+                }
+            }
+        }
+    }
+    tasks.register('androidSourcesJar', Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.sourceFiles
+    }
+
+    artifacts {
+        archives androidSourcesJar
+    }
+}

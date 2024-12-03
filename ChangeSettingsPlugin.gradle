@@ -1,0 +1,62 @@
+import groovy.json.JsonSlurper
+
+apply plugin: ChangePlugin
+
+class ChangePlugin implements Plugin<Settings> {
+
+    def tag = "ChangePlugin-> "
+
+    @Override
+    void apply(Settings settings) {
+        println(tag + "apply settings")
+        // Gradle初始化，此时可以获取到Settings对象
+        settings.gradle.settingsEvaluated {
+            // 加载useLocal.json文件
+            def useLocalFile = new File(settings.getRootDir(), "useLocal.json")
+            if (!useLocalFile.exists()) {
+                println(tag + "useLocal.json文件不存在")
+                return
+            }
+            def useLocalText = useLocalFile.text
+
+            // 解析JSON文本
+            def json = new JsonSlurper()
+            def useLocalData = json.parseText(useLocalText)
+
+            // include
+            useLocalData.each { item ->
+                if (item.useLocal) {
+                    settings.include(":${item.moduleName}")
+                    settings.project(":${item.moduleName}").projectDir = new File(item.modulePath)
+                }
+                println(tag + "item.useLocal: ${item.useLocal}")
+                println(tag + "item.moduleName: ${item.moduleName}")
+                println(tag + "item.modulePath: ${item.modulePath}")
+                println(tag + "item.moduleGav: ${item.moduleGav}")
+            }
+
+            // 依赖替换
+//            SwitchAarToCode(settings.gradle, useLocalData)
+        }
+    }
+
+    def SwitchAarToCode(gradle, useLocalData) {
+        // 所有Project对象evaluate完毕之后，会回调gradle.projectsEvaluated
+        gradle.projectsEvaluated {
+            gradle.allprojects { pro ->
+                // 这个app可以根据你的项目名称来判断
+                if (pro.name == "app") {
+                    pro.configurations.all { configuration ->
+                        configuration.resolutionStrategy.dependencySubstitution { substitutions ->
+                            useLocalData.each { item ->
+                                if (item.useLocal) {
+                                    substitute module(item.moduleGav) using substitutions.project(":${item.moduleName}")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

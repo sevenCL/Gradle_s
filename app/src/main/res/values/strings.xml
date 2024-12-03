@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Gradle_S</string>
+    <string name="toast">toast</string>
+    <string name="route_home">home</string>
+    <string name="route_review">review</string>
+    <string name="route_user">user</string>
+    <string name="app">APP</string>
+</resources>
