@@ -45,9 +45,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.ivCover.load(
             "https://inews.gtimg.com/om_bt/OE8piEBa-tbqn-wNvWZl8coi4AlzoUD43upEkoAnIkYL8AA/641"
         )
-        binding.sivCover.load(
-            "https://inews.gtimg.com/om_bt/OE8piEBa-tbqn-wNvWZl8coi4AlzoUD43upEkoAnIkYL8AA/641"
-        )
+//        binding.sivCover.load(
+//            "https://inews.gtimg.com/om_bt/OE8piEBa-tbqn-wNvWZl8coi4AlzoUD43upEkoAnIkYL8AA/641"
+//        )
     }
 
     override fun loadData() {
