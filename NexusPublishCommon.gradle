@@ -1,12 +1,12 @@
 import groovy.json.JsonSlurper
 
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 def tag = "Nexus Publish-> "
 
 afterEvaluate { project ->
     println(tag + "start ${project.name}")
-    def useLocalFile = new File(settings.getRootDir(), "aarConfig.json")
+    def useLocalFile = new File(project.getRootDir(), "aarConfig.json")
     if (!useLocalFile.exists()) {
         println(tag + "aarConfig.json文件不存在")
         return
@@ -16,13 +16,14 @@ afterEvaluate { project ->
     // 解析JSON文本
     def json = new JsonSlurper()
     def useLocalData = json.parseText(useLocalText)
-    def versionName = "1.0.0"
+    def versionName = "1.0.1"
     useLocalData.each { item ->
         if (item.moduleName == project.name) {
             println(tag + "item.moduleName: ${item.moduleName}")
             println(tag + "item.versionName: ${item.versionName}")
         }
     }
+
     uploadArchives {
         configuration = configurations.archives
         repositories {

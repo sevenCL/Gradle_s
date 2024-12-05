@@ -1,6 +1,20 @@
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+
+apply plugin: 'maven-publish'
+
 def tag = "Make AAR -> "
+def aarPath = "build/outputs/aar/${project.name}-release.aar"
+def versionName = "1.0.0"
+def aarJsonPath = "${project.getRootDir()}/aarConfig.json"
+
+// 定义一个方法来判断是否是release版本
+def isReleaseBuild() {
+    return gradle.startParameter.taskNames.any { it.toLowerCase().contains("release") }
+}
 
 afterEvaluate { project ->
+    println(tag + "start ${project.name} ${isReleaseBuild()}")
     android.libraryVariants.all { variant ->
         if (variant.buildType.name == 'release') {
             // 构建AAR文件
@@ -9,12 +23,72 @@ afterEvaluate { project ->
     }
 }
 
-tasks.register('makeAAR', Copy) {
-    // 设置要复制的文件
-    from('build/outputs/aar/')
-    // 设置输出目录
-    into('/Users/mac/Documents/seven/aarDirs/')
-    // 只复制AAR文件
-    include('*.aar')
-    println(tag + "Succeed")
+tasks.register('makeAAR'){
+
+}
+
+tasks.register('changeVersion') {
+    println(tag + "changeVersion")
+    def useLocalFile = new File(aarJsonPath)
+    if (!useLocalFile.exists()) {
+        println(tag + "aarConfig.json文件不存在")
+        return
+    }
+    def useLocalText = useLocalFile.text
+
+    // 解析JSON文本
+    def json = new JsonSlurper()
+    def useLocalData = json.parseText(useLocalText)
+    def locationVersion = useLocalData["${project.name}_version"]
+    println(tag + "locationVersion: $locationVersion")
+
+    def versionParts = locationVersion.split('\\.')
+    def lastPart = versionParts.last() as int
+    versionParts[-1] = (lastPart + 1).toString()
+    versionName = versionParts.join('.')
+    println(tag + "new versionName: ${versionName}")
+
+    useLocalData["${project.name}_version"] = versionName
+
+    def result = new JsonBuilder(useLocalData).toPrettyString()
+    useLocalFile.write(result)
+
+    println(tag + "modifyJson end")
+
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+
+            def useLocalFile = new File(aarJsonPath)
+            if (!useLocalFile.exists()) {
+                println(tag + "aarConfig.json文件不存在")
+                return
+            }
+            def useLocalText = useLocalFile.text
+
+            // 解析JSON文本
+            def json = new JsonSlurper()
+            def useLocalData = json.parseText(useLocalText)
+            def locationVersion = useLocalData["${project.name}_version"]
+
+            groupId GROUP_ID
+            artifactId project.name
+            version locationVersion
+//            // 指定要发布的AAR文件
+            artifact(aarPath)
+        }
+    }
+
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            url MAVEN_FARM_MODULE_URL
+            credentials {
+                username NEXUS_USERNAME
+                password NEXUS_PASSWORD
+            }
+        }
+    }
 }

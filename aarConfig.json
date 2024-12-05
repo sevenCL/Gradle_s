@@ -1,6 +1,3 @@
-[
-  {
-    "moduleName": "lib_ui",
-    "versionName": "1.0.0"
-  }
-]
+{
+    "lib_ui_version": "1.0.1"
+}
