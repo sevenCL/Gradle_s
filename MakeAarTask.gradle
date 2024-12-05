@@ -1,0 +1,20 @@
+def tag = "Make AAR -> "
+
+afterEvaluate { project ->
+    android.libraryVariants.all { variant ->
+        if (variant.buildType.name == 'release') {
+            // 构建AAR文件
+            makeAAR.dependsOn("assemble${variant.name.capitalize()}")
+        }
+    }
+}
+
+tasks.register('makeAAR', Copy) {
+    // 设置要复制的文件
+    from('build/outputs/aar/')
+    // 设置输出目录
+    into('/Users/mac/Documents/seven/aarDirs/')
+    // 只复制AAR文件
+    include('*.aar')
+    println(tag + "Succeed")
+}

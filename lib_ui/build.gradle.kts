@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
+apply(from = "../MakeAarTask.gradle")
+
 android {
     namespace = "com.seven.lib_ui"
     compileSdk = 34
